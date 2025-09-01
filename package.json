@@ -1,0 +1,15 @@
+{
+  "name": "youtube-clone",
+  "version": "1.0.0",
+  "description": "youtube app made from mern-stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "backend"
+  ],
+  "author": "Rachit Bhatta",
+  "license": "ISC"
+}
