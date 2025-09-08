@@ -23,8 +23,7 @@ const generateAccessAndRefreshToken = async(userId)=>{
 const registerUser = asyncHandler(async (req, res, next) => {
     
     const { fullname,username, email, password } = req.body;
-    if(
-        [fullname,username,email,password].some((field)=>
+    if([fullname,username,email,password].some((field)=>
             !field || field?.trim()===""
         )
     ){
@@ -49,7 +48,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
         throw new ApiError(400,"Cover image is required")
     }
     const avatar = await uploadToCloudinary(avatarLocalPath);
-    const coverImage = await uploadToCloudinary(coverImageLocalPath);
+    const coverImage = coverImageLocalPath ? await uploadToCloudinary(coverImageLocalPath) : null;
 
     if(!avatar){
         throw new ApiError(400,"avatar is required")
@@ -91,28 +90,28 @@ const loginUser=asyncHandler(async(req,res,next)=>{
         throw new ApiError(401,"Invalid credentials")
     }
     const {accessToken,refreshToken} = await generateAccessAndRefreshToken(user._id);
-    return res.status(200).json(new ApiResponse(200,{accessToken,refreshToken},"User logged in successfully"))
-    const newUser = await User.findById(user._id).select(
-        "-password -refreshToken -createdAt -updatedAt -role"
+    return res.status(200).json(new ApiResponse(200,{accessToken,refreshToken},"User logged in successfully"));
+    const loggedInUser = await User.findById(user._id).select(
+        "-password -refreshToken"
     );
 
     const options = {
         httpOnly: true,
         secure:true,
-    }
+    };
     return res
     .status(200)
     .cookie("accessToken",accessToken,options)
     .cookie("refreshToken",refreshToken,options)
-    .json(new ApiResponse(200,{user:refreshToken,accessToken,newUser},"User logged in successfully"));
+    .json(new ApiResponse(200,{user:refreshToken,accessToken,loggedInUser},"User logged in successfully"));
     
 });
 const userLogOut=asyncHandler(async(req,res,next)=>{
-    User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set:{
-                refreshToken:undefined
+            $unset:{
+                refreshToken:1
             },
         },
         {

@@ -24,7 +24,7 @@ const videoSchema=mongoose.Schema({
         type:Number,
         required:true,
     },
-    view:{
+    views:{
         type:Number,
         default:0,
     },
@@ -38,4 +38,5 @@ const videoSchema=mongoose.Schema({
     }
 },{timestamps:true});
 videoSchema.plugin(mongooseAggregatePaginate);
-export default Video=mongoose.model("Video",videoSchema)
+const Video=mongoose.model("Video",videoSchema);
+export default Video

@@ -13,7 +13,6 @@ const UserSchema= new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         unique:true,
         trim:true
@@ -40,10 +39,10 @@ const UserSchema= new mongoose.Schema({
     coverImage:{
         type: String
     },
-    watchHistory:{
+    watchHistory:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Video"
-    },
+    }],
     refreshToken:{
         type:String
     }
@@ -59,9 +58,9 @@ UserSchema.methods.isPasswordCorrect = async function (password) {
 };
 
 UserSchema.methods.generateAccessToken=function(){
-    jwt.sign(
+    return jwt.sign(
         {
-            _id: this.id,
+            _id: this._id,
             email:this.email,
             username:this.username,
             fullname:this.fullname
@@ -73,7 +72,7 @@ UserSchema.methods.generateAccessToken=function(){
     )
 }
 UserSchema.methods.generateRefreshToken=function(){
-    jwt.sign(
+    return jwt.sign(
         {
             _id: this._id,
             email:this.email,
