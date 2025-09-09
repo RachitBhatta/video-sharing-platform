@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import ApiError from "../Utils/apiError.js";
+import ApiError from "../Utilities/apiError.js";
 import jwt from "jsonwebtoken";
 import User from "../Models/user.models.js";
 export const verifyUser=asyncHandler(async(req,res,next)=>{
