@@ -35,7 +35,7 @@ router.route("/refresh").post(accessRefreshToken);
 router.route("/change-password").post(verifyUser,changePassword);
 router.route("/current-user").get(verifyUser,getCurrentUser);
 router.route("/watch-history").get(verifyUser,getWatchHistory);
-router.route("/channel/:channel-profile").get(verifyUser,getChannelProfile);
+router.route("/channel/:username").get(verifyUser,getChannelProfile);
 router.route("/update-account").patch(verifyUser,updateAccountDetails);
 router.route("/update-avatar").patch(verifyUser,upload.single("avatar"),updateUserAvatar);
 router.route("/update-cover-image").patch(verifyUser,upload.single("coverImage"),updateUserCoverImage);
